@@ -208,8 +208,8 @@ type Args struct {
 	CatalogName string `arg:"--catalog-name" default:"default" help:"catalog name from config"`
 	URI         string `arg:"--uri" help:"catalog URI"`
 	Output      string `arg:"--output" default:"text" help:"output type (json/text)"`
-	Credential  string `arg:"--credential" help:"credentials for the catalog"`
-	Token       string `arg:"--token" help:"OAuth token (skip OAuth flow)"`
+	Credential  string `arg:"--credential" help:"credentials for the catalog (values on the command line are visible in process listings; prefer the config file)"`
+	Token       string `arg:"--token" help:"OAuth token (skip OAuth flow; values on the command line are visible in process listings, prefer the config-file token key)"`
 	Warehouse   string `arg:"--warehouse" help:"warehouse to use"`
 	Scope       string `arg:"--scope" default:"catalog" help:"OAuth scope"`
 	Config      string `arg:"--config" help:"path to configuration file"`
@@ -928,6 +928,10 @@ func mergeConf(fileConf *config.CatalogConfig, args *Args, explicitFlags map[str
 
 	if !explicitFlags["credential"] && len(fileConf.Credential) > 0 {
 		args.Credential = fileConf.Credential
+	}
+
+	if !explicitFlags["token"] && len(fileConf.Token) > 0 {
+		args.Token = fileConf.Token
 	}
 
 	if !explicitFlags["warehouse"] && len(fileConf.Warehouse) > 0 {

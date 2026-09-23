@@ -48,6 +48,7 @@ type CatalogConfig struct {
 	URI         string       `yaml:"uri"`
 	Output      string       `yaml:"output"`
 	Credential  string       `yaml:"credential"`
+	Token       string       `yaml:"token"`
 	Warehouse   string       `yaml:"warehouse"`
 	AwsProfile  string       `yaml:"aws-profile"`
 	SQLDriver   string       `yaml:"sql-driver"`

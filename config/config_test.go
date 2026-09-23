@@ -105,6 +105,23 @@ catalog:
 			Warehouse:   "catalog_name",
 		},
 	},
+	// token key parses alongside credential
+	{
+		[]byte(`
+catalog:
+  default:
+    type: rest
+    uri: http://localhost:8181/
+    token: static-bearer-token
+    credential: client-id:client-secret
+`), "",
+		&CatalogConfig{
+			CatalogType: "rest",
+			URI:         "http://localhost:8181/",
+			Token:       "static-bearer-token",
+			Credential:  "client-id:client-secret",
+		},
+	},
 	// include rest options
 	{
 		[]byte(`

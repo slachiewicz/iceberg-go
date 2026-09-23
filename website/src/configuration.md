@@ -36,6 +36,7 @@ catalog:
     uri: https://example.com/iceberg
     warehouse: s3://my-bucket/warehouse
     credential: <client-id>:<client-secret>
+    token: <static-bearer-token>
     output: text
     aws-profile: ""
     rest:
@@ -52,6 +53,7 @@ catalog:
 | `catalog.<name>.uri` | Catalog endpoint or DSN. |
 | `catalog.<name>.warehouse` | Warehouse identifier (REST/Glue) or location (Hive/SQL). |
 | `catalog.<name>.credential` | Credential string passed through to the catalog's auth handler. |
+| `catalog.<name>.token` | Static OAuth bearer token for the REST catalog (skips the OAuth client-credentials flow). Takes precedence over `credential` when both are set. |
 | `catalog.<name>.output` | CLI output format (e.g. `text`, `json`). |
 | `catalog.<name>.aws-profile` | AWS named profile for the Glue catalog. When unset, the AWS SDK default credential chain is used. |
 | `catalog.<name>.sql-driver` | `database/sql` driver name for the SQL catalog. Maps to the `sql.driver` property. The default CLI binary only compiles in `sqliteshim`; other drivers require a custom build. |
@@ -59,6 +61,8 @@ catalog:
 | `catalog.<name>.rest.sigv4-enabled` | Enable AWS SigV4 signing for REST. |
 | `catalog.<name>.rest.signing-name` | SigV4 service name. |
 | `catalog.<name>.rest.signing-region` | SigV4 region. |
+
+> **Note:** Prefer the config file (or a secret manager) over the `--credential`/`--token` CLI flags: values passed on the command line are visible to other local users in process listings (`ps`, `/proc/<pid>/cmdline`) for the lifetime of the process.
 
 ## Catalog options
 

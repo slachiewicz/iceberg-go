@@ -652,3 +652,21 @@ func TestMergeConfAwsProfile(t *testing.T) {
 		assert.Equal(t, "cli-profile", a.AwsProfile)
 	})
 }
+
+func TestMergeConfToken(t *testing.T) {
+	fileCfg := &config.CatalogConfig{Token: "file-token", Credential: "file-credential"}
+
+	t.Run("file token applied when flag absent", func(t *testing.T) {
+		var a Args
+		mergeConf(fileCfg, &a, map[string]bool{})
+		assert.Equal(t, "file-token", a.Token)
+		assert.Equal(t, "file-credential", a.Credential)
+	})
+
+	t.Run("cli token preserved when flag explicit", func(t *testing.T) {
+		a := Args{Token: "cli-token"}
+		mergeConf(fileCfg, &a, map[string]bool{"token": true})
+		assert.Equal(t, "cli-token", a.Token)
+		assert.Equal(t, "file-credential", a.Credential)
+	})
+}
